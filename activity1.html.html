@@ -1,0 +1,693 @@
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body,#app{font-family:'Segoe UI',Tahoma,Arial,sans-serif;direction:rtl;text-align:right;}
+.hidden{display:none!important;}
+
+/* Game palette */
+:root{
+  --g1:#7C3AED;--g1l:#EDE9FE;--g1b:#5B21B6;
+  --g2:#0891B2;--g2l:#CFFAFE;--g2b:#0E7490;
+  --g3:#D97706;--g3l:#FEF3C7;--g3b:#B45309;
+  --g4:#DC2626;--g4l:#FEE2E2;--g4b:#B91C1C;
+  --g5:#059669;--g5l:#D1FAE5;--g5b:#047857;
+  --g6:#DB2777;--g6l:#FCE7F3;--g6b:#BE185D;
+  --g7:#7C3AED;--g7l:#EDE9FE;--g7b:#5B21B6;
+}
+
+#app{background:#0F172A;min-height:600px;padding:0;}
+
+/* ---- SCREENS ---- */
+.screen{padding:24px 20px;animation:fadeIn .3s ease;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+/* HOME */
+#screen-home{background:#0F172A;text-align:center;padding:32px 20px;}
+.home-logo{width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,#7C3AED,#0891B2);display:flex;align-items:center;justify-content:center;font-size:36px;margin:0 auto 16px;}
+.home-title{font-size:24px;font-weight:700;color:#F1F5F9;margin-bottom:6px;}
+.home-sub{font-size:14px;color:#94A3B8;margin-bottom:32px;}
+.home-btns{display:grid;grid-template-columns:1fr 1fr;gap:14px;max-width:360px;margin:0 auto;}
+.hbtn{border-radius:20px;padding:22px 14px;cursor:pointer;border:none;display:flex;flex-direction:column;align-items:center;gap:8px;transition:transform .15s,filter .15s;}
+.hbtn:hover{transform:translateY(-3px);filter:brightness(1.1);}
+.hbtn:active{transform:scale(.97);}
+.hbtn .icon{font-size:32px;}
+.hbtn .label{font-size:15px;font-weight:700;color:#fff;}
+.hbtn .sub{font-size:12px;color:rgba(255,255,255,.75);}
+.hbtn-student{background:linear-gradient(135deg,#7C3AED,#6D28D9);}
+.hbtn-teacher{background:linear-gradient(135deg,#0891B2,#0E7490);}
+
+/* SELECT */
+#screen-select{background:#0F172A;}
+.top-bar{display:flex;align-items:center;gap:12px;margin-bottom:24px;}
+.back-btn{background:#1E293B;border:none;color:#94A3B8;padding:8px 14px;border-radius:12px;cursor:pointer;font-size:13px;font-weight:600;transition:background .15s;}
+.back-btn:hover{background:#334155;color:#F1F5F9;}
+.screen-title{font-size:18px;font-weight:700;color:#F1F5F9;}
+.glass-card{background:#1E293B;border-radius:20px;padding:20px;margin-bottom:16px;}
+.field-label{font-size:12px;color:#94A3B8;margin-bottom:8px;font-weight:600;letter-spacing:.5px;}
+select{width:100%;padding:12px 14px;border-radius:14px;border:1.5px solid #334155;background:#0F172A;color:#F1F5F9;font-size:14px;cursor:pointer;outline:none;transition:border-color .2s;}
+select:focus{border-color:#7C3AED;}
+.group-preview{margin-top:14px;padding-top:14px;border-top:1px solid #334155;}
+.big-btn{width:100%;padding:14px;border-radius:16px;border:none;font-size:15px;font-weight:700;cursor:pointer;color:#fff;transition:transform .15s,filter .15s;margin-top:12px;}
+.big-btn:hover{filter:brightness(1.1);transform:translateY(-2px);}
+.big-btn:active{transform:scale(.97);}
+.big-btn:disabled{opacity:.45;cursor:not-allowed;transform:none;filter:none;}
+
+/* ACTIVITY */
+#screen-activity{background:#0F172A;}
+.player-header{border-radius:20px;padding:18px;margin-bottom:16px;display:flex;align-items:center;gap:14px;}
+.player-avatar{width:54px;height:54px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:700;color:#fff;flex-shrink:0;border:3px solid rgba(255,255,255,.3);}
+.player-name{font-size:15px;font-weight:700;color:#fff;margin-bottom:4px;}
+.player-meta{font-size:12px;color:rgba(255,255,255,.7);}
+.badges-row{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px;}
+.gpill{display:inline-block;padding:3px 10px;border-radius:99px;font-size:11px;font-weight:700;background:rgba(255,255,255,.2);color:#fff;}
+.gpill-gold{background:#F59E0B;color:#78350F;}
+.gpill-extra{background:#8B5CF6;color:#EDE9FE;}
+
+.section-card{background:#1E293B;border-radius:20px;padding:18px;margin-bottom:14px;}
+.section-title{font-size:14px;font-weight:700;color:#F1F5F9;margin-bottom:12px;display:flex;align-items:center;gap:8px;}
+.member-row{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid #0F172A;}
+.member-row:last-child{border-bottom:none;}
+.mavatar{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0;}
+.mname{font-size:13px;font-weight:600;color:#E2E8F0;flex:1;min-width:0;}
+.status-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+.dot-done{background:#10B981;}
+.dot-wait{background:#475569;}
+
+textarea{width:100%;padding:14px;border-radius:16px;border:2px solid #334155;background:#0F172A;color:#F1F5F9;font-size:14px;resize:vertical;min-height:110px;outline:none;transition:border-color .2s;line-height:1.6;}
+textarea:focus{border-color:#7C3AED;}
+textarea::placeholder{color:#475569;}
+
+.deepai-link{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:12px;background:#1E40AF;color:#BFDBFE;font-size:13px;font-weight:600;text-decoration:none;transition:background .15s;}
+.deepai-link:hover{background:#1D4ED8;}
+
+/* CHEER */
+.cheer-overlay{border-radius:24px;padding:28px 20px;text-align:center;margin-bottom:16px;border:2px solid rgba(255,255,255,.15);}
+.cheer-emoji{font-size:52px;display:block;margin-bottom:12px;animation:bounce .6s ease infinite alternate;}
+@keyframes bounce{from{transform:translateY(0)}to{transform:translateY(-8px)}}
+.cheer-headline{font-size:20px;font-weight:700;color:#fff;margin-bottom:8px;}
+.cheer-text{font-size:14px;color:rgba(255,255,255,.85);line-height:1.7;}
+.stars-row{font-size:22px;margin:10px 0;letter-spacing:4px;}
+.confetti-bar{height:6px;border-radius:99px;margin-top:12px;background:linear-gradient(90deg,#F59E0B,#10B981,#7C3AED,#EF4444,#0891B2);}
+
+/* PEERS */
+.peer-answer-card{background:#0F172A;border-radius:14px;padding:14px;margin-bottom:10px;border:1px solid #334155;}
+.peer-name-row{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
+.answer-bubble{font-size:13px;color:#94A3B8;line-height:1.7;padding:10px 12px;background:#1E293B;border-radius:10px;}
+
+/* LEADER */
+.leader-panel{background:#1C1917;border:2px dashed #F59E0B;border-radius:20px;padding:18px;margin-bottom:14px;}
+.leader-title{font-size:13px;font-weight:700;color:#F59E0B;margin-bottom:10px;}
+.prog-wrap{margin-bottom:12px;}
+.prog-label{font-size:12px;color:#94A3B8;margin-bottom:5px;}
+.prog-track{height:8px;background:#334155;border-radius:99px;}
+.prog-fill{height:100%;border-radius:99px;background:linear-gradient(90deg,#7C3AED,#0891B2);transition:width .5s;}
+
+/* NOTIF */
+.notif-card{background:#1C1917;border:1.5px solid #F59E0B;border-radius:14px;padding:12px 14px;margin-bottom:10px;display:flex;align-items:center;gap:10px;}
+.notif-dot{width:10px;height:10px;border-radius:50%;background:#EF4444;flex-shrink:0;animation:pulse 1.2s infinite;}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+.notif-text{font-size:13px;color:#FEF3C7;flex:1;}
+.dismiss-btn{padding:5px 10px;border-radius:8px;border:none;background:#334155;color:#94A3B8;font-size:12px;cursor:pointer;}
+
+/* TEACHER */
+#screen-teacher{background:#0F172A;}
+.stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px;}
+.stat-card{background:#1E293B;border-radius:16px;padding:14px;text-align:center;}
+.stat-num{font-size:26px;font-weight:700;color:#F1F5F9;}
+.stat-label{font-size:11px;color:#64748B;margin-top:3px;}
+.master-prog{background:#1E293B;border-radius:16px;padding:14px;margin-bottom:16px;}
+
+.tab-row{display:flex;gap:6px;margin-bottom:16px;}
+.tab-btn{padding:8px 16px;border-radius:12px;border:none;font-size:13px;font-weight:700;cursor:pointer;transition:all .15s;}
+.tab-btn.on{background:linear-gradient(135deg,#7C3AED,#0891B2);color:#fff;}
+.tab-btn.off{background:#1E293B;color:#64748B;}
+
+.gcard{border-radius:20px;padding:16px;margin-bottom:12px;border:1.5px solid rgba(255,255,255,.08);}
+.gcard-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;}
+.gcard-title{font-size:14px;font-weight:700;color:#F1F5F9;}
+.sent-badge{padding:4px 10px;border-radius:99px;font-size:11px;font-weight:700;background:#064E3B;color:#6EE7B7;}
+.unsent-badge{padding:4px 10px;border-radius:99px;font-size:11px;font-weight:700;background:#1E293B;color:#64748B;}
+
+.loading-spin{display:inline-block;width:16px;height:16px;border:2px solid #334155;border-top-color:#7C3AED;border-radius:50%;animation:spin .7s linear infinite;vertical-align:middle;margin-left:6px;}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+.fb-status{font-size:11px;padding:4px 10px;border-radius:99px;display:inline-flex;align-items:center;gap:5px;}
+.fb-ok{background:#064E3B;color:#6EE7B7;}
+.fb-err{background:#7F1D1D;color:#FCA5A5;}
+.fb-loading{background:#1E3A5F;color:#93C5FD;}
+</style>
+
+<div id="app">
+
+<div id="screen-home" class="screen">
+  <div class="home-logo">🤖</div>
+  <div class="home-title">تحدّي الذكاء الاصطناعي</div>
+  <div class="home-sub">نشاط جماعي — 29 طالبة في 7 مجموعات</div>
+  <div style="margin-bottom:16px;" id="fb-status-home"></div>
+  <div class="home-btns">
+    <div class="hbtn hbtn-student" onclick="gotoSelect()">
+      <span class="icon">👩‍🎓</span>
+      <span class="label">طالبة</span>
+      <span class="sub">أدخلي وشاركي</span>
+    </div>
+    <div class="hbtn hbtn-teacher" onclick="gotoTeacherPass()">
+      <span class="icon">👩‍🏫</span>
+      <span class="label">معلمة</span>
+      <span class="sub">لوحة المتابعة</span>
+    </div>
+  </div>
+</div>
+
+<div id="screen-select" class="screen hidden">
+  <div class="top-bar">
+    <button class="back-btn" onclick="gotoHome()">→ رجوع</button>
+    <span class="screen-title">اختاري اسمك</span>
+  </div>
+  <div class="glass-card">
+    <div class="field-label">اسمك في القائمة</div>
+    <select id="sel-student" onchange="onStudentPick()">
+      <option value="">-- اختاري اسمك --</option>
+    </select>
+    <div id="sel-info" class="group-preview hidden">
+      <div id="sel-group-label" style="font-size:13px;color:#94A3B8;margin-bottom:12px;line-height:1.7;"></div>
+      <button class="big-btn" id="enter-btn" onclick="enterActivity()" style="background:linear-gradient(135deg,#7C3AED,#6D28D9);">دخول النشاط 🚀</button>
+    </div>
+  </div>
+</div>
+
+<div id="screen-activity" class="screen hidden">
+  <div class="top-bar">
+    <button class="back-btn" onclick="gotoSelect()">→ رجوع</button>
+    <span id="fb-live" class="fb-status fb-loading">جاري التحميل<span class="loading-spin"></span></span>
+  </div>
+
+  <div id="player-header" class="player-header"></div>
+
+  <div class="section-card" id="team-card">
+    <div class="section-title">👥 <span id="team-title">مجموعتي</span></div>
+    <div id="team-members"></div>
+  </div>
+
+  <div id="write-section" class="section-card">
+    <div class="section-title">✏️ اكتبي مثالك على تطبيقات الذكاء الاصطناعي</div>
+    <textarea id="answer-input" placeholder="فكّري في مجال تعليمي، طبي، ترفيهي... واكتبي مثالاً رائعاً!"></textarea>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-top:12px;flex-wrap:wrap;gap:8px;">
+      <a class="deepai-link" href="https://deepai.org/chat" target="_blank">🔗 ابحثي في DeepAI</a>
+      <button class="big-btn" onclick="submitAnswer()" style="width:auto;padding:10px 22px;background:linear-gradient(135deg,#059669,#047857);" id="submit-btn">إرسال ✓</button>
+    </div>
+  </div>
+
+  <div id="cheer-section" class="hidden"></div>
+
+  <div id="submitted-section" class="hidden">
+    <div class="section-card">
+      <div class="section-title">💡 إجابتي</div>
+      <div id="my-answer-display" style="font-size:14px;color:#CBD5E1;line-height:1.8;background:#0F172A;border-radius:12px;padding:12px;"></div>
+    </div>
+    <div class="section-card">
+      <div class="section-title">💬 إجابات الزميلات</div>
+      <div id="peers-answers"></div>
+    </div>
+    <div id="leader-panel" class="hidden leader-panel">
+      <div class="leader-title">⭐ أنت قائدة المجموعة</div>
+      <div class="prog-wrap">
+        <div class="prog-label" id="leader-prog-label"></div>
+        <div class="prog-track"><div class="prog-fill" id="leader-prog-fill" style="width:0%"></div></div>
+      </div>
+      <button class="big-btn" id="send-teacher-btn" onclick="leaderSend()" style="background:linear-gradient(135deg,#D97706,#B45309);" disabled>إرسال إجابات المجموعة للمعلمة 📤</button>
+    </div>
+  </div>
+</div>
+
+<div id="screen-pass" class="screen hidden" style="background:#0F172A;display:flex;align-items:center;justify-content:center;min-height:500px;">
+  <div style="background:#1E293B;border-radius:24px;padding:36px 28px;max-width:300px;width:100%;text-align:center;">
+    <div style="font-size:48px;margin-bottom:12px;">🔐</div>
+    <div style="font-size:18px;font-weight:700;color:#F1F5F9;margin-bottom:6px;">لوحة المعلمة</div>
+    <div style="font-size:13px;color:#64748B;margin-bottom:24px;">أدخلي كلمة المرور للمتابعة</div>
+    <input id="pass-input" type="password" placeholder="••••••" maxlength="20"
+      style="width:100%;padding:14px;border-radius:14px;border:2px solid #334155;background:#0F172A;color:#F1F5F9;font-size:20px;text-align:center;letter-spacing:8px;outline:none;margin-bottom:10px;"
+      onkeydown="if(event.key==='Enter')checkPass()"
+      onfocus="this.style.borderColor='#0891B2'" onblur="this.style.borderColor='#334155'">
+    <div id="pass-err" style="font-size:12px;color:#FCA5A5;min-height:18px;margin-bottom:10px;"></div>
+    <button onclick="checkPass()" style="width:100%;padding:13px;border-radius:14px;border:none;background:linear-gradient(135deg,#0891B2,#0E7490);color:#fff;font-size:15px;font-weight:700;cursor:pointer;margin-bottom:10px;">دخول 🔑</button>
+    <button onclick="gotoHome()" style="width:100%;padding:10px;border-radius:14px;border:none;background:#334155;color:#94A3B8;font-size:13px;font-weight:600;cursor:pointer;">→ رجوع</button>
+  </div>
+</div>
+
+<div id="screen-teacher" class="screen hidden">
+  <div class="top-bar">
+    <button class="back-btn" onclick="gotoHome()">→ رجوع</button>
+    <span class="screen-title">لوحة المعلمة</span>
+    <span id="fb-teacher-status" class="fb-status fb-loading">جاري التحميل<span class="loading-spin"></span></span>
+  </div>
+  <div id="teacher-notifs" style="margin-bottom:12px;"></div>
+  <div class="stat-grid">
+    <div class="stat-card"><div class="stat-num" id="t-answered">-</div><div class="stat-label">أجبن</div></div>
+    <div class="stat-card"><div class="stat-num" id="t-groups-sent" style="color:#F59E0B;">-</div><div class="stat-label">مجموعات أرسلت</div></div>
+    <div class="stat-card"><div class="stat-num" id="t-pct" style="color:#0891B2;">-%</div><div class="stat-label">اكتمل</div></div>
+  </div>
+  <div class="master-prog">
+    <div class="prog-label" style="font-size:12px;color:#94A3B8;margin-bottom:6px;">تقدم الفصل</div>
+    <div class="prog-track"><div class="prog-fill" id="t-master-prog" style="width:0%;"></div></div>
+  </div>
+  <div class="tab-row">
+    <button class="tab-btn on" id="tab-ov" onclick="tTab('ov')">نظرة عامة</button>
+    <button class="tab-btn off" id="tab-gr" onclick="tTab('gr')">المجموعات</button>
+  </div>
+  <div id="t-overview"></div>
+  <div id="t-groups" class="hidden"></div>
+
+  <div style="margin-top:20px;background:#1C1917;border:1.5px dashed #EF4444;border-radius:16px;padding:16px;">
+    <div style="font-size:13px;font-weight:700;color:#EF4444;margin-bottom:10px;">🗑️ إعادة تعيين النشاط</div>
+    <p style="font-size:12px;color:#94A3B8;line-height:1.7;margin-bottom:12px;">احذفي إجابات الطالبات لإعادة استخدام النشاط من جديد. النشاط نفسه لن يتأثر.</p>
+    <select id="del-sel" style="width:100%;padding:10px;border-radius:10px;border:1px solid #475569;background:#0F172A;color:#F1F5F9;font-size:13px;margin-bottom:10px;">
+      <option value="all">🗑️ حذف كل الإجابات (جميع الطالبات)</option>
+      <option value="0">حذف مجموعة 1 فقط</option>
+      <option value="1">حذف مجموعة 2 فقط</option>
+      <option value="2">حذف مجموعة 3 فقط</option>
+      <option value="3">حذف مجموعة 4 فقط</option>
+      <option value="4">حذف مجموعة 5 فقط</option>
+      <option value="5">حذف مجموعة 6 فقط</option>
+      <option value="6">حذف مجموعة 7 فقط</option>
+    </select>
+    <button onclick="doDelete()" style="width:100%;padding:12px;border-radius:12px;border:none;background:linear-gradient(135deg,#EF4444,#B91C1C);color:#fff;font-size:14px;font-weight:700;cursor:pointer;">تنفيذ الحذف</button>
+    <div id="del-msg" style="font-size:12px;text-align:center;min-height:18px;margin-top:8px;"></div>
+  </div>
+
+</div>
+
+<script>
+const FB = 'https://schoolproject-97946-default-rtdb.firebaseio.com/activity';
+
+const ALL = [
+  "اسماء يحيى الاحمد العبدالموسى","اسيل مصطفى هاشم يوسف عبدالمجيد","الاء عماد الشاوي","ايه دحام الخلف",
+  "بشرا عبدالرحمان تنك ريز","بيسان احمد حسنى مصطفى حسن","تبارك رمضان العلي","تسنيم وسيم خليل الخواجا",
+  "جنه المأوى احمد محمد الحمدان","راما تميم المقداد","ريتال سلامه السيد احمد طاحون","ريم احمد امير",
+  "زين الشام حمدان الحبيني","سما احمد محمد السيد اسماعيل","شام علاء المسالمه","شعاع احمد جمال سيد محمد",
+  "شهد السعيد بوكيوض","شهد محمد زكريا محمد حسن","شيخه سيف ناصر الدرعى الكعبى","علا محمد مازن سلخ",
+  "عهد كاظم حسن العابدي","فاطمة مرعى حمود النيافى","فرح خالد صالح","لولوه عبدالله عبدالرحمن احمد المحمد",
+  "مشاعل عادل محمد على البلوشى","نادين احمد بخيت محمد عمر","هدى احمد محمد عبدالسلام على",
+  "هناء فخر الدين احمد الامين","يمنى ايمن احمد عبدالمقصود عزازى"
+];
+
+const GROUPS = [];
+for(let i=0;i<28;i+=4) GROUPS.push(ALL.slice(i,i+4));
+GROUPS[GROUPS.length-1].push(ALL[28]);
+
+const GCOLS = [
+  {bg:'#4C1D95',light:'#EDE9FE',mid:'#7C3AED',dark:'#5B21B6'},
+  {bg:'#164E63',light:'#CFFAFE',mid:'#0891B2',dark:'#0E7490'},
+  {bg:'#78350F',light:'#FEF3C7',mid:'#D97706',dark:'#B45309'},
+  {bg:'#7F1D1D',light:'#FEE2E2',mid:'#DC2626',dark:'#B91C1C'},
+  {bg:'#064E3B',light:'#D1FAE5',mid:'#059669',dark:'#047857'},
+  {bg:'#831843',light:'#FCE7F3',mid:'#DB2777',dark:'#BE185D'},
+  {bg:'#312E81',light:'#E0E7FF',mid:'#6366F1',dark:'#4338CA'}
+];
+
+const CHEERS = [
+  {emoji:'🌟',title:'رائعة يا نجمة!',msg:'إجابتك أضاءت المجموعة كلها! عقلك النيّر وفضولك في البحث يجعلانك متميزة. استمري بهذا التألق دائماً!',bg:'#1e1b4b'},
+  {emoji:'🏆',title:'أحسنتِ يا بطلة!',msg:'ما شاء الله! إجابتك تدل على فهم عميق وتفكير إبداعي. المعرفة التي شاركتِها اليوم ستبقى في ذاكرة زميلاتك.',bg:'#1a2e05'},
+  {emoji:'💡',title:'فكرة ذهبية!',msg:'يا سلام على عقلك! اخترتِ مثالاً رائعاً يعكس مدى استيعابك للذكاء الاصطناعي. إبداعك لا حدود له!',bg:'#2d1b00'},
+  {emoji:'🚀',title:'انطلقتِ كالصاروخ!',msg:'جهودك تثمر! إجابتك منظمة ومدروسة. كل خطوة في التعلم تقربك أكثر من النجاح الكبير.',bg:'#0c1445'},
+  {emoji:'🌸',title:'برافو عليكِ!',msg:'تعاملتِ مع السؤال بثقة وذكاء. إجابتك تعكس روحك المبادِرة وحبك للاكتشاف. المعلمة فخورة بك!',bg:'#3b0764'},
+  {emoji:'⭐',title:'نجمة الفصل!',msg:'كل كلمة كتبتِها تُظهر اجتهادك. ذكاؤك واجتهادك يصنعان مستقبلاً مشرقاً. استمري دائماً!',bg:'#0f2942'},
+  {emoji:'🎯',title:'في الصميم!',msg:'أصبتِ الهدف! فكرتك دقيقة وعملية. المعرفة التي تبنيها اليوم ستفتح لك أبواباً كثيرة غداً.',bg:'#1a0a2e'}
+];
+
+function initials(n){const p=n.trim().split(' ');return(p[0][0]+(p[1]?p[1][0]:'')).toUpperCase();}
+function groupOf(name){for(let g=0;g<GROUPS.length;g++)if(GROUPS[g].includes(name))return{idx:g,members:GROUPS[g]};return null;}
+function isLeader(name){return GROUPS.some(g=>g[0]===name);}
+function safeKey(name){return name.replace(/[.#$\[\]/\s]/g,'_');}
+
+async function fbGet(path){
+  const r=await fetch(FB+'/'+path+'.json');
+  if(!r.ok)return null;
+  return await r.json();
+}
+async function fbSet(path,data){
+  await fetch(FB+'/'+path+'.json',{method:'PUT',body:JSON.stringify(data),headers:{'Content-Type':'application/json'}});
+}
+async function fbPush(path,data){
+  await fetch(FB+'/'+path+'.json',{method:'POST',body:JSON.stringify(data),headers:{'Content-Type':'application/json'}});
+}
+
+let cur=null, pollTimer=null, lastData={};
+
+const TEACHER_PASS='1234';
+
+function show(id){
+  ['screen-home','screen-select','screen-activity','screen-teacher','screen-pass'].forEach(s=>{
+    const el=document.getElementById(s);
+    if(el)el.classList.toggle('hidden',s!==id);
+  });
+  if(pollTimer){clearInterval(pollTimer);pollTimer=null;}
+}
+
+function gotoHome(){show('screen-home');loadFbStatus();}
+function gotoSelect(){show('screen-select');}
+function gotoTeacherPass(){
+  show('screen-pass');
+  document.getElementById('pass-input').value='';
+  document.getElementById('pass-err').textContent='';
+  setTimeout(()=>document.getElementById('pass-input').focus(),200);
+}
+function checkPass(){
+  if(document.getElementById('pass-input').value===TEACHER_PASS){
+    show('screen-teacher');loadTeacher();
+  } else {
+    document.getElementById('pass-err').textContent='❌ كلمة المرور غير صحيحة';
+    document.getElementById('pass-input').value='';
+    document.getElementById('pass-input').focus();
+  }
+}
+function gotoTeacher(){show('screen-teacher');loadTeacher();}
+
+async function doDelete(){
+  const sel=document.getElementById('del-sel').value;
+  const msg=document.getElementById('del-msg');
+  const label=sel==='all'?'جميع الطالبات':'المجموعة المحددة';
+  if(!confirm('هل أنت متأكدة؟ سيتم حذف إجابات '+label+' نهائياً.'))return;
+  msg.style.color='#93C5FD';msg.textContent='جاري الحذف...';
+  try{
+    if(sel==='all'){
+      await fbSet('students',null);
+      await fbSet('sent',null);
+      await fbSet('notifications',null);
+      await fbSet('teacherNotifs',null);
+      msg.style.color='#6EE7B7';msg.textContent='✓ تم حذف جميع البيانات. النشاط جاهز للاستخدام مجدداً.';
+    } else {
+      const gi=parseInt(sel);
+      for(const m of GROUPS[gi]) await fbSet('students/'+safeKey(m),null);
+      await fbSet('sent/group_'+gi,null);
+      msg.style.color='#6EE7B7';msg.textContent='✓ تم حذف إجابات مجموعة '+(gi+1)+' بنجاح.';
+    }
+    setTimeout(()=>{msg.textContent='';loadTeacher();},2000);
+  }catch(e){
+    msg.style.color='#FCA5A5';msg.textContent='× تعذّر الحذف، تحقق من الاتصال';
+  }
+}
+
+async function loadFbStatus(){
+  const el=document.getElementById('fb-status-home');
+  el.innerHTML='<span class="fb-status fb-loading">جاري الاتصال<span class="loading-spin"></span></span>';
+  try{
+    await fbGet('ping');
+    el.innerHTML='<span class="fb-status fb-ok">✓ متصل بقاعدة البيانات</span>';
+  }catch(e){
+    el.innerHTML='<span class="fb-status fb-err">× تعذّر الاتصال</span>';
+  }
+}
+
+function populateSelect(){
+  const sel=document.getElementById('sel-student');
+  ALL.forEach(n=>{const o=document.createElement('option');o.value=n;o.textContent=n;sel.appendChild(o);});
+}
+
+function onStudentPick(){
+  const name=document.getElementById('sel-student').value;
+  const info=document.getElementById('sel-info');
+  const lbl=document.getElementById('sel-group-label');
+  if(!name){info.classList.add('hidden');return;}
+  const g=groupOf(name);
+  const ldr=g.members[0];
+  const extra=name===ALL[28];
+  const c=GCOLS[g.idx%GCOLS.length];
+  lbl.innerHTML=`<span style="color:#F1F5F9;font-weight:700;">مجموعة ${g.idx+1}</span> &nbsp;|&nbsp; ${g.members.length} طالبات<br>قائدة المجموعة: <span style="background:${c.mid};color:#fff;padding:2px 10px;border-radius:99px;font-size:11px;font-weight:700;">${ldr.split(' ')[0]}</span>${extra?'&nbsp;<span style="background:#7C3AED;color:#EDE9FE;padding:2px 10px;border-radius:99px;font-size:11px;font-weight:700;">عضو إضافي</span>':''}`;
+  info.classList.remove('hidden');
+}
+
+function enterActivity(){
+  cur=document.getElementById('sel-student').value;
+  if(!cur)return;
+  renderActivity();
+  show('screen-activity');
+  pollTimer=setInterval(()=>renderActivity(),6000);
+}
+
+async function renderActivity(){
+  if(!cur)return;
+  const g=groupOf(cur);
+  const c=GCOLS[g.idx%GCOLS.length];
+  const amLeader=isLeader(cur);
+  const amExtra=cur===ALL[28];
+
+  let data={};
+  try{
+    const snap=await fbGet('students');
+    if(snap)data=snap;
+    const liveEl=document.getElementById('fb-live');
+    if(liveEl)liveEl.outerHTML='<span class="fb-status fb-ok" id="fb-live">● مباشر</span>';
+  }catch(e){
+    const liveEl=document.getElementById('fb-live');
+    if(liveEl)liveEl.outerHTML='<span class="fb-status fb-err" id="fb-live">× لا اتصال</span>';
+    return;
+  }
+
+  const myEntry=data[safeKey(cur)];
+  const hasAns=myEntry&&myEntry.answer;
+
+  const ph=document.getElementById('player-header');
+  if(ph) ph.style.background=`linear-gradient(135deg,${c.bg},${c.dark})`;
+  ph.innerHTML=`
+    <div class="player-avatar" style="background:${c.mid};">${initials(cur)}</div>
+    <div style="flex:1;">
+      <div class="player-name">${cur.split(' ')[0]}</div>
+      <div class="player-meta">مجموعة ${g.idx+1}</div>
+      <div class="badges-row">
+        ${amLeader?'<span class="gpill gpill-gold">⭐ قائدة</span>':''}
+        ${amExtra?'<span class="gpill gpill-extra">+ عضو إضافي</span>':''}
+        <span class="gpill">${g.members.length} أعضاء</span>
+      </div>
+    </div>`;
+
+  const tc=document.getElementById('team-card');
+  if(tc) tc.style.borderTop=`4px solid ${c.mid}`;
+  document.getElementById('team-title').textContent=`مجموعة ${g.idx+1}`;
+
+  document.getElementById('team-members').innerHTML=g.members.map(m=>{
+    const isMe=m===cur;
+    const isLdr=m===g.members[0];
+    const mEntry=data[safeKey(m)];
+    const mDone=mEntry&&mEntry.answer;
+    return`<div class="member-row">
+      <div class="mavatar" style="background:${c.mid};color:#fff;">${initials(m)}</div>
+      <div class="mname">${m}${isMe?' <span style="font-size:10px;color:#94A3B8;">(أنت)</span>':''}</div>
+      ${isLdr?`<span style="font-size:10px;background:#F59E0B;color:#78350F;padding:2px 8px;border-radius:99px;font-weight:700;">قائدة</span>`:''}
+      <div class="status-dot ${mDone?'dot-done':'dot-wait'}"></div>
+    </div>`;
+  }).join('');
+
+  document.getElementById('write-section').classList.toggle('hidden',hasAns);
+  document.getElementById('cheer-section').classList.toggle('hidden',!hasAns);
+  document.getElementById('submitted-section').classList.toggle('hidden',!hasAns);
+
+  if(hasAns){
+    if(!lastData[cur+'_cheer']){
+      lastData[cur+'_cheer']=true;
+      const ci=cur.length%CHEERS.length;
+      const ch=CHEERS[ci];
+      document.getElementById('cheer-section').innerHTML=`
+        <div class="cheer-overlay" style="background:${ch.bg};margin-bottom:14px;">
+          <span class="cheer-emoji">${ch.emoji}</span>
+          <div class="stars-row">★ ★ ★ ★ ★</div>
+          <div class="cheer-headline">${ch.title}</div>
+          <div class="cheer-text">${ch.msg}</div>
+          <div class="confetti-bar"></div>
+        </div>`;
+    }
+
+    document.getElementById('my-answer-display').textContent=myEntry.answer;
+
+    const peers=g.members.filter(m=>m!==cur);
+    document.getElementById('peers-answers').innerHTML=peers.map(m=>{
+      const e=data[safeKey(m)];
+      const mc=GCOLS[g.idx%GCOLS.length];
+      if(!e||!e.answer) return`<div style="display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid #1E293B;">
+        <div class="mavatar" style="background:#1E293B;color:#64748B;">${initials(m)}</div>
+        <span style="font-size:13px;color:#475569;">${m.split(' ')[0]} — لم تكتب بعد...</span>
+      </div>`;
+      return`<div class="peer-answer-card">
+        <div class="peer-name-row">
+          <div class="mavatar" style="background:${mc.mid};color:#fff;width:30px;height:30px;font-size:11px;">${initials(m)}</div>
+          <span style="font-size:13px;font-weight:700;color:#E2E8F0;">${m.split(' ')[0]}</span>
+          <span style="font-size:10px;color:#64748B;margin-right:auto;">${e.time||''}</span>
+        </div>
+        <div class="answer-bubble">${e.answer}</div>
+      </div>`;
+    }).join('');
+
+    if(amLeader){
+      document.getElementById('leader-panel').classList.remove('hidden');
+      const total=g.members.length;
+      const done=g.members.filter(m=>data[safeKey(m)]&&data[safeKey(m)].answer).length;
+      const pct=Math.round(done/total*100);
+      document.getElementById('leader-prog-label').textContent=`تقدم المجموعة: ${done} / ${total} طالبة`;
+      document.getElementById('leader-prog-fill').style.width=pct+'%';
+      const sentSnap=await fbGet('sent/group_'+g.idx);
+      const sentBtn=document.getElementById('send-teacher-btn');
+      if(sentSnap){
+        sentBtn.disabled=true;
+        sentBtn.textContent='✓ تم الإرسال للمعلمة';
+        sentBtn.style.background='#1E293B';
+      } else {
+        sentBtn.disabled=done<total;
+      }
+    } else {
+      document.getElementById('leader-panel').classList.add('hidden');
+    }
+  }
+}
+
+async function submitAnswer(){
+  const ans=document.getElementById('answer-input').value.trim();
+  if(!ans){alert('اكتبي إجابتك أولاً 📝');return;}
+  const btn=document.getElementById('submit-btn');
+  btn.disabled=true;btn.textContent='جاري الحفظ...';
+  const g=groupOf(cur);
+  const key=safeKey(cur);
+  try{
+    await fbSet('students/'+key,{
+      name:cur,answer:ans,
+      time:new Date().toLocaleTimeString('ar-QA'),
+      group:g.idx+1,
+      groupLeader:g.members[0]
+    });
+    await fbPush('notifications',{
+      type:'answer',from:cur,group:g.idx+1,
+      leader:g.members[0],time:Date.now(),read:false
+    });
+    await renderActivity();
+  }catch(e){
+    alert('تعذّر الحفظ، تحقق من الاتصال');
+    btn.disabled=false;btn.textContent='إرسال ✓';
+  }
+}
+
+async function leaderSend(){
+  const g=groupOf(cur);
+  const data=await fbGet('students')||{};
+  const total=g.members.length;
+  const done=g.members.filter(m=>data[safeKey(m)]&&data[safeKey(m)].answer).length;
+  if(done<total){alert('يجب على جميع الطالبات الإجابة أولاً!');return;}
+  const btn=document.getElementById('send-teacher-btn');
+  btn.disabled=true;btn.textContent='جاري الإرسال...';
+  try{
+    await fbSet('sent/group_'+g.idx,{leader:cur,time:Date.now(),timeStr:new Date().toLocaleTimeString('ar-QA'),groupIdx:g.idx+1});
+    await fbPush('teacherNotifs',{group:g.idx+1,leader:cur,time:Date.now(),timeStr:new Date().toLocaleTimeString('ar-QA'),read:false});
+    btn.textContent='✓ تم الإرسال للمعلمة';
+    btn.style.background='#1E293B';
+  }catch(e){
+    alert('تعذّر الإرسال');
+    btn.disabled=false;btn.textContent='إرسال إجابات المجموعة للمعلمة 📤';
+  }
+}
+
+async function loadTeacher(){
+  const statusEl=document.getElementById('fb-teacher-status');
+  try{
+    const [studentsData,sentData,notifsData]=await Promise.all([
+      fbGet('students'),fbGet('sent'),fbGet('teacherNotifs')
+    ]);
+    statusEl.outerHTML='<span class="fb-status fb-ok" id="fb-teacher-status">● مباشر</span>';
+    renderTeacherUI(studentsData||{},sentData||{},notifsData||{});
+  }catch(e){
+    statusEl.outerHTML='<span class="fb-status fb-err" id="fb-teacher-status">× لا اتصال</span>';
+  }
+  if(pollTimer)clearInterval(pollTimer);
+  pollTimer=setInterval(loadTeacher,8000);
+}
+
+function renderTeacherUI(students,sent,notifs){
+  const answered=ALL.filter(s=>students[safeKey(s)]&&students[safeKey(s)].answer).length;
+  const groupsSent=GROUPS.filter((g,i)=>sent['group_'+i]).length;
+  const pct=Math.round(answered/ALL.length*100);
+  document.getElementById('t-answered').textContent=answered;
+  document.getElementById('t-groups-sent').textContent=groupsSent;
+  document.getElementById('t-pct').textContent=pct+'%';
+  document.getElementById('t-master-prog').style.width=pct+'%';
+
+  const unreadNotifs=Object.entries(notifs).filter(([k,v])=>!v.read);
+  const nContainer=document.getElementById('teacher-notifs');
+  nContainer.innerHTML=unreadNotifs.map(([k,n])=>`
+    <div class="notif-card">
+      <div class="notif-dot"></div>
+      <div class="notif-text">📬 مجموعة ${n.group} أرسلت إجاباتها — ${n.timeStr}</div>
+      <button class="dismiss-btn" onclick="dismissNotif('${k}')">✓ قرأت</button>
+    </div>`).join('');
+
+  renderTeacherOverview(students,sent);
+
+  const tg=document.getElementById('t-groups');
+  if(!tg.classList.contains('hidden')) renderTeacherGroups(students,sent);
+}
+
+function renderTeacherOverview(students,sent){
+  const answered=ALL.filter(s=>students[safeKey(s)]&&students[safeKey(s)].answer).length;
+  document.getElementById('t-overview').innerHTML=`
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;">
+      ${GROUPS.map((g,i)=>{
+        const c=GCOLS[i%GCOLS.length];
+        const done=g.filter(m=>students[safeKey(m)]&&students[safeKey(m)].answer).length;
+        const pct=Math.round(done/g.length*100);
+        const isSent=sent['group_'+i];
+        return`<div style="background:#1E293B;border-radius:16px;padding:14px;border-top:4px solid ${c.mid};">
+          <div style="font-size:12px;font-weight:700;color:${c.mid};margin-bottom:6px;">مجموعة ${i+1}</div>
+          <div style="font-size:20px;font-weight:700;color:#F1F5F9;">${done}/${g.length}</div>
+          <div style="height:4px;background:#334155;border-radius:99px;margin:6px 0;"><div style="height:100%;width:${pct}%;background:${c.mid};border-radius:99px;"></div></div>
+          <div style="font-size:10px;color:${isSent?'#10B981':'#64748B'};">${isSent?'✓ أُرسلت':'لم ترسل'}</div>
+        </div>`;
+      }).join('')}
+    </div>`;
+}
+
+async function renderTeacherGroups(students,sent){
+  document.getElementById('t-groups').innerHTML=GROUPS.map((g,i)=>{
+    const c=GCOLS[i%GCOLS.length];
+    const isSent=sent['group_'+i];
+    const done=g.filter(m=>students[safeKey(m)]&&students[safeKey(m)].answer).length;
+    const pct=Math.round(done/g.length*100);
+    return`<div class="gcard" style="background:${c.bg};border-color:${c.mid};">
+      <div class="gcard-head">
+        <div class="gcard-title" style="color:#fff;">مجموعة ${i+1} ${i===6?'<span style="font-size:10px;background:#7C3AED;color:#EDE9FE;padding:2px 8px;border-radius:99px;"> +عضو إضافي</span>':''}</div>
+        <span class="${isSent?'sent-badge':'unsent-badge'}">${isSent?'✓ أُرسلت':'لم ترسل'}</span>
+      </div>
+      <div class="prog-track" style="margin-bottom:10px;"><div class="prog-fill" style="width:${pct}%;background:${c.mid};"></div></div>
+      ${g.map(m=>{
+        const e=students[safeKey(m)];
+        const isLdr=m===g[0];
+        const isEx=m===ALL[28];
+        return`<div style="padding:8px 0;border-bottom:1px solid rgba(255,255,255,.1);">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
+            <div style="width:28px;height:28px;border-radius:50%;background:${c.mid};display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff;flex-shrink:0;">${initials(m)}</div>
+            <span style="font-size:13px;font-weight:600;color:#fff;flex:1;">${m}</span>
+            ${isLdr?'<span style="font-size:10px;background:#F59E0B;color:#78350F;padding:1px 7px;border-radius:99px;font-weight:700;">قائدة</span>':''}
+            ${isEx?'<span style="font-size:10px;background:#7C3AED;color:#EDE9FE;padding:1px 7px;border-radius:99px;font-weight:700;">إضافي</span>':''}
+            <span style="width:8px;height:8px;border-radius:50%;background:${e&&e.answer?'#10B981':'#475569'};flex-shrink:0;"></span>
+          </div>
+          ${e&&e.answer?`<div style="font-size:12px;color:rgba(255,255,255,.7);background:rgba(0,0,0,.25);border-radius:8px;padding:8px 10px;line-height:1.6;">${e.answer}</div>`:''}
+        </div>`;
+      }).join('')}
+    </div>`;
+  }).join('');
+}
+
+async function dismissNotif(key){
+  try{
+    await fbSet('teacherNotifs/'+key+'/read',true);
+    loadTeacher();
+  }catch(e){}
+}
+
+function tTab(tab){
+  document.getElementById('t-overview').classList.toggle('hidden',tab!=='ov');
+  document.getElementById('t-groups').classList.toggle('hidden',tab!=='gr');
+  document.getElementById('tab-ov').className='tab-btn '+(tab==='ov'?'on':'off');
+  document.getElementById('tab-gr').className='tab-btn '+(tab==='gr'?'on':'off');
+  if(tab==='gr'){
+    fbGet('students').then(s=>fbGet('sent').then(sent=>renderTeacherGroups(s||{},sent||{})));
+  }
+}
+
+populateSelect();
+loadFbStatus();
+</script>
